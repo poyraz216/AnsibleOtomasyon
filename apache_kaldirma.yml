@@ -1,0 +1,15 @@
+---
+  - hosts: all 
+    become: true 
+    tasks: 
+
+
+    - name : Bu gorev apache2 kaldırma islemi gerceklectirir
+      apt:
+        name : apache2
+        state: absent
+    
+    - name : Bu gorev php kutuphane kaldırma islemi gerceklectirir
+      apt:
+        name : libapache2-mod-php
+        state: absent

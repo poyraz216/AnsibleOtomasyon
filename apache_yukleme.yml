@@ -3,16 +3,39 @@
     become: true 
     tasks: 
 
-    - name: Bu gorev , apt paket index'ini günceller
+# Bu görevler ubuntu için yazıldı.
+    - name: Bu gorev ubuntu apt paket index'ini günceller
       apt:
         update_cache: yes
+      when: ansible_distribution == "Ubuntu"
 
-    - name : Bu gorev apache2 yukleme islemi gerceklectirir
+    - name : Bu gorev ubuntu apache2 yukleme islemi gerceklectirir
       apt:
         name : apache2
         state: latest
+      when: ansible_distribution == "Ubuntu"
     
-    - name : Bu gorev php kutuphane yukleme islemi gerceklectirir
+    - name : Bu gorev ubuntu php kutuphane yukleme islemi gerceklectirir
       apt:
         name : libapache2-mod-php
         state: latest
+      when: ansible_distribution == "Ubuntu"
+
+# Bu görevler rocky için yazıldı.
+
+    - name: Bu gorev Rocky apt paket index'ini günceller
+      dnf:
+        update_cache: yes
+      when: ansible_distribution == "Rocky"
+
+    - name : Bu gorev Rocky apache2 yukleme islemi gerceklectirir
+      dnf:
+        name : httpd
+        state: latest
+      when: ansible_distribution == "Rocky"
+    
+    - name : Bu gorev Rocky php kutuphane yukleme islemi gerceklectirir
+      dnf:
+        name : php
+        state: latest
+      when: ansible_distribution == "Rocky"

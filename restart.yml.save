@@ -1,0 +1,23 @@
+---
+  - name: Search String with lineinfile
+    hosts: makina1
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        register: presence
+        shell: "grep -i 'migrate' /home/theadmin/deneme"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.64'].presence.stdout }}"
+  
+  - name: restart
+    hosts: makina2
+    become: yes
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: hostvars .presence is changed
+        ansible.builtin.reboot:

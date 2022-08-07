@@ -1,0 +1,136 @@
+---
+  - name: Makina1'de ara
+    hosts: makina1
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        become: yes
+        register: content1
+        shell: "cat /home/theadmin/deneme.log"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.64'].content1.stdout }}"
+
+  - name: Exclude Makina1 restart
+    hosts: excludeMakina1
+    become: yes
+    vars:
+      deneme: "{{ hostvars['192.168.1.64'].content1.stdout }}"
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: '"migrate" in deneme'
+        ansible.builtin.reboot:
+  - name: logRestart
+    hosts: makina1
+    become: yes
+    tasks:
+      - name: "logRestart"
+        when: '"migrate" in content1.stdout'
+        ansible.builtin.reboot:
+
+## makina2
+  - name: Makina2'de ara
+    hosts: makina2
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        become: yes
+        register: content2
+        shell: "cat /home/theadmin/deneme.log"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.65'].content2.stdout }}"
+
+  - name: Exclude Makina2 restart
+    hosts: excludeMakina2
+    become: yes
+    vars:
+      deneme: "{{ hostvars['192.168.1.65'].content2.stdout }}"
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: '"migrate" in deneme'
+        ansible.builtin.reboot:
+  - name: logRestart
+    hosts: makina2
+    become: yes
+    tasks:
+      - name: "logRestart"
+        when: '"migrate" in content2.stdout'
+        ansible.builtin.reboot:
+
+  ## makina3
+  - name: Makina3'de ara
+    hosts: makina3
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        become: yes
+        register: content3
+        shell: "cat /home/theadmin/deneme.log"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.66'].content3.stdout }}"
+
+  - name: Exclude Makina3 restart
+    hosts: excludeMakina3
+    become: yes
+    vars:
+      deneme: "{{ hostvars['192.168.1.66'].content3.stdout }}"
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: '"migrate" in deneme'
+        ansible.builtin.reboot:
+  - name: logRestart
+    hosts: makina3
+    become: yes
+    tasks:
+      - name: "logRestart"
+        when: '"migrate" in content3.stdout'
+        ansible.builtin.reboot:
+
+
+  ## makina4 
+  - name: Makina4'de ara
+    hosts: makina4
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        become: yes
+        register: content
+        shell: "cat /home/theadmin/deneme.log"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.67'].content.stdout }}"
+
+  - name: Exclude Makina4 restart
+    hosts: excludeMakina4
+    become: yes
+    vars:
+      deneme: "{{ hostvars['192.168.1.67'].content.stdout }}"
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: '"migrate" in deneme'
+        ansible.builtin.reboot:
+  - name: logRestart
+    hosts: makina4
+    become: yes
+    tasks:
+      - name: "logRestart"
+        when: '"migrate" in content.stdout'
+        ansible.builtin.reboot:

@@ -1,0 +1,65 @@
+---
+  - name: Makine1'e bak
+    hosts: makina1
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        register: presence1
+        shell: "grep -i 'migrate' /home/theadmin/deneme"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.64'].presence1.stdout }}"
+  
+  - name: restart
+    hosts: excludeMakina1
+    become: yes
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: hostvars['192.168.1.64'].presence1 is changed
+        ansible.builtin.reboot:
+
+
+  - name: restart
+    hosts: makina1
+    become: yes
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: presence1 is changed
+        ansible.builtin.reboot:
+  
+  - name: makina2'ye bak
+    hosts: makina2
+    become: yes
+
+    tasks:
+      - name: "Searching for a String"
+        register: presence2
+        shell: "grep -i 'migrate' /home/theadmin/deneme"
+
+
+  - hosts: "localhost"
+    tasks:
+    - debug: >
+        msg="The old max_logger build is {{ hostvars['192.168.1.65'].presence2.stdout }}"
+  
+  - name: restart
+    hosts: excludeMakina2
+    become: yes
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: hostvars['192.168.1.65'].presence2 is changed
+        ansible.builtin.reboot:
+
+
+  - name: restart
+    hosts: makina2
+    become: yes
+    tasks:
+      - name: "sample task in case the String present in the file"
+        when: presence2 is changed
+        ansible.builtin.reboot:
+
